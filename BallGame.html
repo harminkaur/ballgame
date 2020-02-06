@@ -1,0 +1,128 @@
+
+
+<!DOCTYPE html>
+<!--
+
+-->
+<html>
+    <head>
+        <title>Harmins's Game</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width">
+        <script type='text/javascript'>
+			var radius = 50;
+                var x = 0, y = 200;     // location
+                var timerId; 				// holds the id of the timer
+				var xSpeed=6;
+				var ySpeed =6;
+				var timeleft=60;
+							var current=0;
+			
+			function score() {
+					if(current<=9 && timeleft>=1){
+					var newVal = current +1;
+					current = newVal;
+					document.getElementById("scores").innerHTML ="Score= "+current;
+					if(current==10){
+					alert("You have just beaten the clock!!! Great Job");
+					stopAnimation();}}
+					
+				}
+				function stopAnimation() {
+                    clearTimeout(timerId);
+                }
+				
+				
+			function restart(){
+				window.location.reload(); }1
+			
+			
+            function play() {
+                
+                
+
+                // starts the animation
+                function startAnimation() {
+                    // 16  milliseconds works out to 62.5 frames per second.
+                    // for games, 60 frames per second is standard
+                    timerId = setInterval(updateAnimation, 16);
+                }
+
+                // stops the animation
+                
+
+                // This function is called every 16 milliseconds
+                function updateAnimation() {
+                    // 1. Update the animation variables
+                    x = x + xSpeed;
+					y = y+ySpeed; 
+					
+
+    
+                    var e = document.getElementById("movingBall");
+                    e.style.left=x+"px";
+                    e.style.top=y+"px";
+
+                    // stop the animation if the ball is at the edge of the screen
+                    // window.innerWidth is the current width of the browser
+                    if (x >= window.innerWidth - radius*2 )
+                        xSpeed =(xSpeed * -1);
+					if (x<=0)
+						xSpeed=xSpeed *-1;
+					if ( y>= window.innerHeight - radius*2)
+						ySpeed = ySpeed *-1;
+					if (y<=0)
+						ySpeed= ySpeed*-1;
+					
+                
+				
+                }
+                // Start things up!
+                startAnimation();
+				var downloadTimer = setInterval(function(){
+				if(current<=9){
+				document.getElementById("countdown").innerHTML = timeleft + " seconds remaining";
+						timeleft -= 1;}
+				else {document.getElementById("status").innerHTML ="Congrats you win!!";
+				stopAnimation();}
+				if(timeleft <= 0){
+				clearInterval(downloadTimer);
+				document.getElementById("countdown").innerHTML = "Finished";
+				if (timeleft<=0 && current<10){
+			document.getElementById("status").innerHTML ="Sorry you lose";
+				stopAnimation();}
+				if(timeleft>=0 && current>=10){
+				document.getElementById("status").innerHTML ="Congrats you win!!";
+				stopAnimation();}
+				
+				}
+					}, 1000);
+				
+				
+				
+				
+            }
+		
+        </script>
+        <style>
+            #movingBall {
+                position: absolute;
+                width:100px;
+                height:100px;
+                border-radius:50px;
+                background-color:red;
+                top:200px;
+                left:0px;
+            }
+        </style>
+    </head>
+    <body style='text-align:center;'>
+        <div id="movingBall" onclick="score();" ></div> 
+		<h2>To win touch the ball 10 times in less then 60 seconds</h2>
+		<h1 id="scores">Score= 0</h1>
+		<h1 id="countdown"><h1>
+		<input type="button" value="Start Game" onclick="play();">
+		<input type="button" value="Restart Game" onclick="restart();">
+		<h1 id="status"></h1>
+    </body>
+</html>
